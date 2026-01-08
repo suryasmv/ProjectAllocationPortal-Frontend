@@ -1,0 +1,172 @@
+/* ===== PAGE LAYOUT ===== */
+.auth-container {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  background: linear-gradient(135deg, #eef6ff, #e6f0ff);
+  padding: 64px;
+  gap: 64px;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Prevent height jump */
+.form-container {
+  min-height: 320px; /* Adjust if needed */
+  display: flex;
+  align-items: center;
+}
+
+/* Forms fill container */
+.form-container form {
+  width: 100%;
+}
+
+
+/* ===== LEFT BRANDING ===== */
+.branding {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.branding h1 {
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.branding .accent {
+  color: #1e5bff;
+}
+
+.branding p {
+  max-width: 420px;
+  font-size: 18px;
+  color: #475569;
+  font-style: italic;
+}
+
+/* Feature dots */
+.features {
+  margin-top: 60px;
+  display: flex;
+  gap: 20%;
+  color: #334155;
+}
+
+.features div {
+  position: relative;
+  font-weight: 500;
+}
+
+.features div::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background: #1e5bff;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 12px;
+}
+
+/* ===== RIGHT CARD ===== */
+.card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 25px 60px rgba(30, 91, 255, 0.15);
+  
+}
+
+.card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: black;
+  margin-bottom: 24px;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+/* ===== TABS ===== */
+.tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  font-weight: 600;
+  cursor: pointer;
+  color: #475569;
+  transition: all 0.25s ease;
+}
+
+.tabs button.active {
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.center-title {
+  text-align: center;
+}
+
+
+/* ===== FORMS ===== */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+input {
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 10px;
+  border: none;
+  background: #f8fafc;
+  font-size: 14px;
+  outline: none;
+}
+
+input:focus {
+  box-shadow: 0 0 0 2px rgba(30, 91, 255, 0.25);
+}
+
+/* ===== PRIMARY BUTTON ===== */
+button[type='submit'] {
+  height: 48px;
+  background: #1e5bff;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.25s ease;
+}
+ 
+button[type='submit']:hover {
+  background: #1648d8;
+}
+
+/* ===== ADMIN HINT ===== */
+.hint {
+  margin-top: 16px;
+  font-size: 13px;
+  color: #64748b;
+  text-align: center;
+}

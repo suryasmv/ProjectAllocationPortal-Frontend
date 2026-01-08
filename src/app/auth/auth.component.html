@@ -1,0 +1,56 @@
+<div class="auth-container">
+  <!-- Left Branding -->
+  <div class="branding">
+    <h1>
+      <span>Project</span>
+      <span class="accent">Allocation</span>
+      <span>Portal</span>
+    </h1>
+    <p>Streamline your project management and employee allocation</p>
+
+    <div class="features">
+      <div>Manage</div>
+      <div>Allocate</div>
+      <div>Track</div>
+    </div>
+  </div>
+
+  <!-- Right Card -->
+  <div class="card">
+    <p class="subtitle center-title">Login or Register as Employee</p>
+    <div class="tabs">
+      <button
+        [class.active]="activeTab === 'login'"
+        (click)="switchTab('login')"
+      >
+        Login
+      </button>
+      <button
+        [class.active]="activeTab === 'register'"
+        (click)="switchTab('register')"
+      >
+        Register
+      </button>
+    </div>
+
+    <!-- Login -->
+    <form *ngIf="activeTab === 'login'" [formGroup]="loginForm" (ngSubmit)="login()">
+      <input type="text" placeholder="Username" formControlName="username" />
+      <input type="password" placeholder="Password" formControlName="password" />
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- Register -->
+    <form
+      *ngIf="activeTab === 'register'"
+      [formGroup]="registerForm"
+      (ngSubmit)="register()"
+    >
+      <input type="text" placeholder="Username" formControlName="fullName" />
+      <input type="email" placeholder="Email" formControlName="email" />
+      <input type="password" placeholder="Password" formControlName="password" />
+      <input type="password" placeholder="Confirm Password" formControlName="confirmPassword" />
+      <button type="submit">Register as Employee</button>
+    </form>
+  </div>
+</div>
