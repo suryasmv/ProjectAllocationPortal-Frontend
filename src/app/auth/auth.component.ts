@@ -1,13 +1,20 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent {
   activeTab: 'login' | 'register' = 'login';
@@ -15,75 +22,75 @@ export class AuthComponent {
   loginForm: FormGroup;
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    /* ---------------- LOGIN FORM ---------------- */
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
 
+    /* -------------- REGISTER FORM -------------- */
     this.registerForm = this.fb.group({
-      fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required], // frontend-only
     });
   }
 
+  /* ---------------- TAB SWITCH ---------------- */
   switchTab(tab: 'login' | 'register') {
     this.activeTab = tab;
   }
 
+  /* ---------------- LOGIN ---------------- */
   login() {
-    const { username, password } = this.loginForm.value;
-
-    // Admin login
-    if (username?.toLowerCase() === 'rmg') {
-      if (password === 'admin123') {
-        alert('Welcome Admin RMG');
-        return;
-      }
-      alert('Invalid admin password');
-      return;
-    }
-
-    const users = JSON.parse(localStorage.getItem('employees') || '[]');
-    const user = users.find(
-      (u: any) => u.username === username && u.password === password
-    );
-
-    user
-      ? alert(`Welcome ${user.fullName}`)
-      : alert('Invalid username or password');
+  if (this.loginForm.invalid) {
+    alert('Please enter username and password');
+    return;
   }
 
+  this.authService.login(this.loginForm.value).subscribe({
+    next: (res: any) => {
+      alert('Login successful');
+
+      // ✅ Role-based routing
+      if (res.role === 'ADMIN') {
+        this.router.navigate(['/admin']); // or dashboard
+      } else {
+        this.router.navigate(['/users']);
+      }
+    },
+    error: () => {
+      alert('Invalid username or password');
+    },
+  });
+}
+
+  /* ---------------- REGISTER ---------------- */
   register() {
     if (this.registerForm.invalid) {
-      alert('Fill all fields');
+      alert('Please fill all fields');
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem('employees') || '[]');
-    const { username } = this.registerForm.value;
+    const { password, confirmPassword, ...payload } = this.registerForm.value;
 
-    if (username.toLowerCase() === 'rmg') {
-      alert('Username reserved');
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
       return;
     }
+    payload.password = password;
 
-    if (users.some((u: any) => u.username === username)) {
-      alert('Username already exists');
-      return;
-    }
-
-    users.push({
-      ...this.registerForm.value,
-      createdAt: new Date().toISOString()
+    this.authService.register(payload).subscribe({
+      next: () => {
+        alert('Registration successful');
+        this.registerForm.reset();
+        this.switchTab('login');
+      },
+      error: () => {
+        alert('Registration failed');
+      },
     });
-
-    localStorage.setItem('employees', JSON.stringify(users));
-
-    alert('Registration successful');
-    this.registerForm.reset();
-    this.switchTab('login');
   }
 }
